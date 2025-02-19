@@ -44,35 +44,35 @@ class QuizGameGUI extends JFrame {
     public QuizGameGUI() {
         // List of 30 questions
         questions = Arrays.asList(
-            new Question("What is the capital of France?", new String[]{"Paris", "London", "Rome", "Berlin"}, 'A'),
-            new Question("Which planet is known as the Red Planet?", new String[]{"Earth", "Mars", "Jupiter", "Venus"}, 'B'),
-            new Question("What is the square root of 64?", new String[]{"6", "8", "10", "12"}, 'B'),
-            new Question("Who developed the theory of relativity?", new String[]{"Newton", "Einstein", "Tesla", "Hawking"}, 'B'),
-            new Question("What is the chemical symbol for gold?", new String[]{"Au", "Ag", "Pb", "Fe"}, 'A'),
-            new Question("Which gas do plants absorb from the atmosphere?", new String[]{"Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"}, 'B'),
-            new Question("Who painted the Mona Lisa?", new String[]{"Van Gogh", "Picasso", "Da Vinci", "Michelangelo"}, 'C'),
-            new Question("Which country is famous for the Great Wall?", new String[]{"India", "China", "Japan", "Russia"}, 'B'),
-            new Question("What is the largest ocean on Earth?", new String[]{"Atlantic", "Pacific", "Indian", "Arctic"}, 'B'),
-            new Question("Who discovered gravity?", new String[]{"Newton", "Einstein", "Galileo", "Copernicus"}, 'A'),
-            new Question("What is the longest river in the world?", new String[]{"Amazon", "Nile", "Yangtze", "Mississippi"}, 'B'),
-            new Question("What is the boiling point of water in Celsius?", new String[]{"90", "100", "110", "120"}, 'B'),
-            new Question("Which element has the chemical symbol 'H'?", new String[]{"Helium", "Hydrogen", "Hassium", "Hafnium"}, 'B'),
-            new Question("What is the national language of Japan?", new String[]{"Mandarin", "Korean", "Japanese", "Thai"}, 'C'),
-            new Question("Who invented the telephone?", new String[]{"Edison", "Bell", "Tesla", "Morse"}, 'B'),
-            new Question("Which continent has the most countries?", new String[]{"Africa", "Asia", "Europe", "South America"}, 'A'),
-            new Question("Which bird is known as the king of birds?", new String[]{"Sparrow", "Peacock", "Eagle", "Ostrich"}, 'C'),
-            new Question("What is the smallest unit of life?", new String[]{"Tissue", "Organ", "Cell", "Organism"}, 'C'),
-            new Question("What is the chemical formula of water?", new String[]{"CO2", "O2", "H2O", "NaCl"}, 'C'),
-            new Question("Who was the first man to step on the moon?", new String[]{"Buzz Aldrin", "Yuri Gagarin", "Neil Armstrong", "Michael Collins"}, 'C'),
-            new Question("What is the fastest land animal?", new String[]{"Cheetah", "Lion", "Tiger", "Horse"}, 'A'),
-            new Question("Which country is known as the Land of the Rising Sun?", new String[]{"China", "Japan", "South Korea", "Vietnam"}, 'B'),
-            new Question("What is the hardest natural substance on Earth?", new String[]{"Gold", "Iron", "Diamond", "Platinum"}, 'C'),
-            new Question("Who wrote 'Hamlet'?", new String[]{"Shakespeare", "Dickens", "Hemingway", "Austen"}, 'A'),
-            new Question("Which blood type is known as the universal donor?", new String[]{"O-", "A+", "B-", "AB+"}, 'A'),
-            new Question("What is the main gas found in Earth's atmosphere?", new String[]{"Oxygen", "Hydrogen", "Nitrogen", "Carbon Dioxide"}, 'C'),
-            new Question("Which is the longest bone in the human body?", new String[]{"Femur", "Tibia", "Fibula", "Humerus"}, 'A'),
-            new Question("How many continents are there on Earth?", new String[]{"5", "6", "7", "8"}, 'C'),
-            new Question("What is the currency of the United Kingdom?", new String[]{"Euro", "Pound", "Dollar", "Franc"}, 'B')
+                new Question("What is the capital of France?", new String[]{"Paris", "London", "Rome", "Berlin"}, 'A'),
+                new Question("Which planet is known as the Red Planet?", new String[]{"Earth", "Mars", "Jupiter", "Venus"}, 'B'),
+                new Question("What is the square root of 64?", new String[]{"6", "8", "10", "12"}, 'B'),
+                new Question("Who developed the theory of relativity?", new String[]{"Newton", "Einstein", "Tesla", "Hawking"}, 'B'),
+                new Question("What is the chemical symbol for gold?", new String[]{"Au", "Ag", "Pb", "Fe"}, 'A'),
+                new Question("Which gas do plants absorb from the atmosphere?", new String[]{"Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"}, 'B'),
+                new Question("Who painted the Mona Lisa?", new String[]{"Van Gogh", "Picasso", "Da Vinci", "Michelangelo"}, 'C'),
+                new Question("Which country is famous for the Great Wall?", new String[]{"India", "China", "Japan", "Russia"}, 'B'),
+                new Question("What is the largest ocean on Earth?", new String[]{"Atlantic", "Pacific", "Indian", "Arctic"}, 'B'),
+                new Question("Who discovered gravity?", new String[]{"Newton", "Einstein", "Galileo", "Copernicus"}, 'A'),
+                new Question("What is the longest river in the world?", new String[]{"Amazon", "Nile", "Yangtze", "Mississippi"}, 'B'),
+                new Question("What is the boiling point of water in Celsius?", new String[]{"90", "100", "110", "120"}, 'B'),
+                new Question("Which element has the chemical symbol 'H'?", new String[]{"Helium", "Hydrogen", "Hassium", "Hafnium"}, 'B'),
+                new Question("What is the national language of Japan?", new String[]{"Mandarin", "Korean", "Japanese", "Thai"}, 'C'),
+                new Question("Who invented the telephone?", new String[]{"Edison", "Bell", "Tesla", "Morse"}, 'B'),
+                new Question("Which continent has the most countries?", new String[]{"Africa", "Asia", "Europe", "South America"}, 'A'),
+                new Question("Which bird is known as the king of birds?", new String[]{"Sparrow", "Peacock", "Eagle", "Ostrich"}, 'C'),
+                new Question("What is the smallest unit of life?", new String[]{"Tissue", "Organ", "Cell", "Organism"}, 'C'),
+                new Question("What is the chemical formula of water?", new String[]{"CO2", "O2", "H2O", "NaCl"}, 'C'),
+                new Question("Who was the first man to step on the moon?", new String[]{"Buzz Aldrin", "Yuri Gagarin", "Neil Armstrong", "Michael Collins"}, 'C'),
+                new Question("What is the fastest land animal?", new String[]{"Cheetah", "Lion", "Tiger", "Horse"}, 'A'),
+                new Question("Which country is known as the Land of the Rising Sun?", new String[]{"China", "Japan", "South Korea", "Vietnam"}, 'B'),
+                new Question("What is the hardest natural substance on Earth?", new String[]{"Gold", "Iron", "Diamond", "Platinum"}, 'C'),
+                new Question("Who wrote 'Hamlet'?", new String[]{"Shakespeare", "Dickens", "Hemingway", "Austen"}, 'A'),
+                new Question("Which blood type is known as the universal donor?", new String[]{"O-", "A+", "B-", "AB+"}, 'A'),
+                new Question("What is the main gas found in Earth's atmosphere?", new String[]{"Oxygen", "Hydrogen", "Nitrogen", "Carbon Dioxide"}, 'C'),
+                new Question("Which is the longest bone in the human body?", new String[]{"Femur", "Tibia", "Fibula", "Humerus"}, 'A'),
+                new Question("How many continents are there on Earth?", new String[]{"5", "6", "7", "8"}, 'C'),
+                new Question("What is the currency of the United Kingdom?", new String[]{"Euro", "Pound", "Dollar", "Franc"}, 'B')
         );
 
         // GUI Setup
@@ -166,10 +166,11 @@ class QuizGameGUI extends JFrame {
         JOptionPane.showMessageDialog(null, "Quiz Over! Your score: " + score + "/" + questions.size());
         System.exit(0);
     }
-}
 
-public class Main {
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args)
+    {
         SwingUtilities.invokeLater(QuizGameGUI::new);
     }
 }
