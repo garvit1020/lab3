@@ -1,4 +1,11 @@
-import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Question {
     private String question;
@@ -11,15 +18,12 @@ class Question {
         this.correctAnswer = Character.toUpperCase(correctAnswer);
     }
 
-    public void displayQuestion() {
-        System.out.println(question);
-        for (int i = 0; i < options.length; i++) {
-            System.out.println((char) ('A' + i) + ". " + options[i]);
-        }
+    public String getQuestion() {
+        return question;
     }
 
-    public boolean checkAnswer(char answer) {
-        return Character.toUpperCase(answer) == correctAnswer;
+    public String[] getOptions() {
+        return options;
     }
 
     public char getCorrectAnswer() {
@@ -27,96 +31,121 @@ class Question {
     }
 }
 
-class QuizGame {
+class QuizGameGUI extends JFrame {
     private List<Question> questions;
+    private int currentQuestionIndex = 0;
     private int score = 0;
-    private static final int TIMEOUT = 10; // 10 seconds
+    private int timeLeft = 10; // 10 seconds per question
+    private Timer timer;
 
-    public QuizGame() {
+    private JLabel questionLabel;
+    private JButton[] optionButtons = new JButton[4];
+    private JLabel timerLabel;
+    private JLabel scoreLabel;
+
+    public QuizGameGUI() {
+        // Sample questions
         questions = Arrays.asList(
             new Question("What is the capital of France?", new String[]{"Paris", "London", "Rome", "Berlin"}, 'A'),
             new Question("Which programming language is used for Android development?", new String[]{"Python", "Java", "C#", "Swift"}, 'B'),
-            new Question("Who wrote 'Hamlet'?", new String[]{"Shakespeare", "Dickens", "Hemingway", "Austen"}, 'A'),
-            new Question("What is the chemical symbol for water?", new String[]{"H2O", "CO2", "O2", "NaCl"}, 'A'),
-            new Question("How many continents are there?", new String[]{"5", "6", "7", "8"}, 'C'),
-            new Question("Which planet is known as the Red Planet?", new String[]{"Earth", "Venus", "Mars", "Jupiter"}, 'C'),
-            new Question("What is the square root of 64?", new String[]{"6", "7", "8", "9"}, 'C'),
-            new Question("Who painted the Mona Lisa?", new String[]{"Van Gogh", "Da Vinci", "Picasso", "Rembrandt"}, 'B'),
-            new Question("What is the largest ocean on Earth?", new String[]{"Atlantic", "Indian", "Arctic", "Pacific"}, 'D'),
-            new Question("Which gas do plants absorb from the atmosphere?", new String[]{"Oxygen", "Nitrogen", "Carbon Dioxide", "Helium"}, 'C'),
-            new Question("What is the capital of Japan?", new String[]{"Seoul", "Beijing", "Tokyo", "Bangkok"}, 'C'),
-            new Question("Which element has the atomic number 1?", new String[]{"Helium", "Oxygen", "Hydrogen", "Carbon"}, 'C'),
-            new Question("What is the hardest natural substance on Earth?", new String[]{"Gold", "Iron", "Diamond", "Platinum"}, 'C'),
-            new Question("Which planet is closest to the Sun?", new String[]{"Venus", "Earth", "Mercury", "Mars"}, 'C'),
-            new Question("What is the national animal of India?", new String[]{"Tiger", "Elephant", "Lion", "Peacock"}, 'A'),
-            new Question("Which country is famous for its tulips?", new String[]{"France", "Netherlands", "Italy", "Germany"}, 'B'),
-            new Question("What is the longest river in the world?", new String[]{"Amazon", "Nile", "Yangtze", "Mississippi"}, 'B'),
-            new Question("Who discovered gravity?", new String[]{"Einstein", "Newton", "Galileo", "Tesla"}, 'B'),
-            new Question("Which is the smallest country in the world?", new String[]{"Vatican City", "Monaco", "Maldives", "Liechtenstein"}, 'A'),
-            new Question("What is the chemical symbol for gold?", new String[]{"Au", "Ag", "Pb", "Fe"}, 'A'),
-            new Question("Which sport is known as the 'king of sports'?", new String[]{"Cricket", "Tennis", "Soccer", "Basketball"}, 'C'),
-            new Question("Which is the tallest mountain in the world?", new String[]{"K2", "Mount Everest", "Kangchenjunga", "Makalu"}, 'B')
+            new Question("Who wrote 'Hamlet'?", new String[]{"Shakespeare", "Dickens", "Hemingway", "Austen"}, 'A')
         );
-    }
 
-    public void startQuiz() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the Quiz Game!");
-        System.out.println("----------------------------");
-        System.out.println("You have " + TIMEOUT + " seconds to answer each question.\n");
+        // GUI Setup
+        setTitle("Quiz Game");
+        setSize(500, 350);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(6, 1));
 
-        for (Question question : questions) {
-            question.displayQuestion();
-            char userAnswer = getUserAnswer(scanner);
+        // UI Components
+        questionLabel = new JLabel("Question", JLabel.CENTER);
+        add(questionLabel);
 
-            if (userAnswer == '\0') {
-                System.out.println("\nTime's up! Moving to the next question.\n");
-                continue; // Skip the question if time runs out
-            }
-
-            if (question.checkAnswer(userAnswer)) {
-                System.out.println("Correct!\n");
-                score++;
-            } else {
-                System.out.println("Wrong! The correct answer was " + question.getCorrectAnswer() + ".\n");
-            }
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i] = new JButton();
+            add(optionButtons[i]);
+            final int index = i;
+            optionButtons[i].addActionListener(e -> checkAnswer((char) ('A' + index)));
         }
 
-        System.out.println("Quiz Over! Your final score: " + score + "/" + questions.size());
-        scanner.close();
+        timerLabel = new JLabel("Time left: 10", JLabel.CENTER);
+        add(timerLabel);
+
+        scoreLabel = new JLabel("Score: 0", JLabel.CENTER);
+        add(scoreLabel);
+
+        // Load First Question
+        loadNextQuestion();
+        setVisible(true);
     }
 
-    private char getUserAnswer(Scanner scanner) {
-        final char[] answer = {'\0'};
-        Thread inputThread = new Thread(() -> {
-            try {
-                System.out.print("Your answer (A/B/C/D): ");
-                String userInput = scanner.nextLine().trim().toUpperCase();
-                if (!userInput.isEmpty()) {
-                    answer[0] = userInput.charAt(0);
+    private void loadNextQuestion() {
+        if (currentQuestionIndex >= questions.size()) {
+            showFinalScore();
+            return;
+        }
+
+        Question q = questions.get(currentQuestionIndex);
+        questionLabel.setText(q.getQuestion());
+        String[] options = q.getOptions();
+        for (int i = 0; i < 4; i++) {
+            optionButtons[i].setText((char) ('A' + i) + ". " + options[i]);
+            optionButtons[i].setEnabled(true);
+        }
+
+        timeLeft = 10;
+        startTimer();
+    }
+
+    private void startTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerLabel.setText("Time left: " + timeLeft);
+                } else {
+                    timer.cancel();
+                    JOptionPane.showMessageDialog(null, "Time's up!");
+                    nextQuestion();
                 }
-            } catch (Exception e) {
-                System.out.println("Input error.");
             }
-        });
+        }, 1000, 1000);
+    }
 
-        inputThread.start();
-        try {
-            inputThread.join(TIMEOUT * 1000); // Wait for the thread to complete
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private void checkAnswer(char selectedOption) {
+        timer.cancel();
+        Question q = questions.get(currentQuestionIndex);
+
+        if (selectedOption == q.getCorrectAnswer()) {
+            score++;
+            JOptionPane.showMessageDialog(null, "Correct!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Wrong! Correct answer: " + q.getCorrectAnswer());
         }
 
-        if (inputThread.isAlive()) {
-            inputThread.interrupt();
-            return '\0'; // Return null character if time runs out
-        }
-        return answer[0];
+        nextQuestion();
+    }
+
+    private void nextQuestion() {
+        currentQuestionIndex++;
+        scoreLabel.setText("Score: " + score);
+        loadNextQuestion();
+    }
+
+    private void showFinalScore() {
+        JOptionPane.showMessageDialog(null, "Quiz Over! Your score: " + score + "/" + questions.size());
+        System.exit(0);
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        new QuizGame().startQuiz();
+        SwingUtilities.invokeLater(QuizGameGUI::new);
     }
 }
